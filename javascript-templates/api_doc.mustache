@@ -28,10 +28,9 @@ var defaultClient = {{{moduleName}}}.ApiClient.instance;
 var {{{name}}} = defaultClient.authentications['{{{name}}}'];
 {{{name}}}.username = 'YOUR USERNAME';
 {{{name}}}.password = 'YOUR PASSWORD';{{/isBasic}}{{#isApiKey}}
-// Configure API key authorization: {{{name}}}
-var {{{name}}} = defaultClient.authentications['{{{name}}}'];
-{{{name}}}.clientId = 'YOUR CLIENT ID';
-{{{name}}}.clientSecret = 'YOUR CLIENT SECRET';{{/isApiKey}}{{#isOAuth}}
+// Configure authorization
+defaultClient.clientId = 'YOUR CLIENT ID';
+defaultClient.clientSecret = 'YOUR CLIENT SECRET';{{/isApiKey}}{{#isOAuth}}
 // Configure OAuth2 access token for authorization: {{{name}}}
 var {{{name}}} = defaultClient.authentications['{{{name}}}'];
 {{{name}}}.accessToken = 'YOUR ACCESS TOKEN';{{/isOAuth}}
