@@ -1,6 +1,6 @@
 {
   "name": "visma-sign-client",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Swagger_documentation_for_Visma_Sign_API_",
   "license": "gpl-3.0",
   "main": "src/index.js",

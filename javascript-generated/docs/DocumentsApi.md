@@ -25,10 +25,9 @@ Document must have pending or unsent invites to be cancelled. All attached invit
 var VismaSignClient = require('visma-sign-client');
 var defaultClient = VismaSignClient.ApiClient.instance;
 
-// Configure API key authorization: ApiKeyAuth
-var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.clientId = 'YOUR CLIENT ID';
-ApiKeyAuth.clientSecret = 'YOUR CLIENT SECRET';
+// Configure authorization
+defaultClient.clientId = 'YOUR CLIENT ID';
+defaultClient.clientSecret = 'YOUR CLIENT SECRET';
 
 var apiInstance = new VismaSignClient.DocumentsApi();
 
@@ -74,10 +73,9 @@ Creates new document
 var VismaSignClient = require('visma-sign-client');
 var defaultClient = VismaSignClient.ApiClient.instance;
 
-// Configure API key authorization: ApiKeyAuth
-var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.clientId = 'YOUR CLIENT ID';
-ApiKeyAuth.clientSecret = 'YOUR CLIENT SECRET';
+// Configure authorization
+defaultClient.clientId = 'YOUR CLIENT ID';
+defaultClient.clientSecret = 'YOUR CLIENT SECRET';
 
 var apiInstance = new VismaSignClient.DocumentsApi();
 
@@ -123,10 +121,9 @@ A document must be cancelled or signed or have no invitations or signatures to b
 var VismaSignClient = require('visma-sign-client');
 var defaultClient = VismaSignClient.ApiClient.instance;
 
-// Configure API key authorization: ApiKeyAuth
-var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.clientId = 'YOUR CLIENT ID';
-ApiKeyAuth.clientSecret = 'YOUR CLIENT SECRET';
+// Configure authorization
+defaultClient.clientId = 'YOUR CLIENT ID';
+defaultClient.clientSecret = 'YOUR CLIENT SECRET';
 
 var apiInstance = new VismaSignClient.DocumentsApi();
 
@@ -172,10 +169,9 @@ Finds document status
 var VismaSignClient = require('visma-sign-client');
 var defaultClient = VismaSignClient.ApiClient.instance;
 
-// Configure API key authorization: ApiKeyAuth
-var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.clientId = 'YOUR CLIENT ID';
-ApiKeyAuth.clientSecret = 'YOUR CLIENT SECRET';
+// Configure authorization
+defaultClient.clientId = 'YOUR CLIENT ID';
+defaultClient.clientSecret = 'YOUR CLIENT SECRET';
 
 var apiInstance = new VismaSignClient.DocumentsApi();
 
@@ -221,10 +217,9 @@ Remaind all document invitees
 var VismaSignClient = require('visma-sign-client');
 var defaultClient = VismaSignClient.ApiClient.instance;
 
-// Configure API key authorization: ApiKeyAuth
-var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.clientId = 'YOUR CLIENT ID';
-ApiKeyAuth.clientSecret = 'YOUR CLIENT SECRET';
+// Configure authorization
+defaultClient.clientId = 'YOUR CLIENT ID';
+defaultClient.clientSecret = 'YOUR CLIENT SECRET';
 
 var apiInstance = new VismaSignClient.DocumentsApi();
 
@@ -270,10 +265,9 @@ Search documents
 var VismaSignClient = require('visma-sign-client');
 var defaultClient = VismaSignClient.ApiClient.instance;
 
-// Configure API key authorization: ApiKeyAuth
-var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.clientId = 'YOUR CLIENT ID';
-ApiKeyAuth.clientSecret = 'YOUR CLIENT SECRET';
+// Configure authorization
+defaultClient.clientId = 'YOUR CLIENT ID';
+defaultClient.clientSecret = 'YOUR CLIENT SECRET';
 
 var apiInstance = new VismaSignClient.DocumentsApi();
 

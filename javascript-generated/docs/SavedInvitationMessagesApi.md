@@ -21,10 +21,9 @@ Gets saved email messages
 var VismaSignClient = require('visma-sign-client');
 var defaultClient = VismaSignClient.ApiClient.instance;
 
-// Configure API key authorization: ApiKeyAuth
-var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.clientId = 'YOUR CLIENT ID';
-ApiKeyAuth.clientSecret = 'YOUR CLIENT SECRET';
+// Configure authorization
+defaultClient.clientId = 'YOUR CLIENT ID';
+defaultClient.clientSecret = 'YOUR CLIENT SECRET';
 
 var apiInstance = new VismaSignClient.SavedInvitationMessagesApi();
 apiInstance.getSavedEmailMessages().then(function(data) {
@@ -64,10 +63,9 @@ Gets saved sms messages
 var VismaSignClient = require('visma-sign-client');
 var defaultClient = VismaSignClient.ApiClient.instance;
 
-// Configure API key authorization: ApiKeyAuth
-var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.clientId = 'YOUR CLIENT ID';
-ApiKeyAuth.clientSecret = 'YOUR CLIENT SECRET';
+// Configure authorization
+defaultClient.clientId = 'YOUR CLIENT ID';
+defaultClient.clientSecret = 'YOUR CLIENT SECRET';
 
 var apiInstance = new VismaSignClient.SavedInvitationMessagesApi();
 apiInstance.getSavedSmsMessages().then(function(data) {

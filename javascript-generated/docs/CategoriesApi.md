@@ -23,10 +23,9 @@ Creates new category
 var VismaSignClient = require('visma-sign-client');
 var defaultClient = VismaSignClient.ApiClient.instance;
 
-// Configure API key authorization: ApiKeyAuth
-var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.clientId = 'YOUR CLIENT ID';
-ApiKeyAuth.clientSecret = 'YOUR CLIENT SECRET';
+// Configure authorization
+defaultClient.clientId = 'YOUR CLIENT ID';
+defaultClient.clientSecret = 'YOUR CLIENT SECRET';
 
 var apiInstance = new VismaSignClient.CategoriesApi();
 
@@ -72,10 +71,9 @@ Deletes category
 var VismaSignClient = require('visma-sign-client');
 var defaultClient = VismaSignClient.ApiClient.instance;
 
-// Configure API key authorization: ApiKeyAuth
-var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.clientId = 'YOUR CLIENT ID';
-ApiKeyAuth.clientSecret = 'YOUR CLIENT SECRET';
+// Configure authorization
+defaultClient.clientId = 'YOUR CLIENT ID';
+defaultClient.clientSecret = 'YOUR CLIENT SECRET';
 
 var apiInstance = new VismaSignClient.CategoriesApi();
 
@@ -121,10 +119,9 @@ Gets categories
 var VismaSignClient = require('visma-sign-client');
 var defaultClient = VismaSignClient.ApiClient.instance;
 
-// Configure API key authorization: ApiKeyAuth
-var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.clientId = 'YOUR CLIENT ID';
-ApiKeyAuth.clientSecret = 'YOUR CLIENT SECRET';
+// Configure authorization
+defaultClient.clientId = 'YOUR CLIENT ID';
+defaultClient.clientSecret = 'YOUR CLIENT SECRET';
 
 var apiInstance = new VismaSignClient.CategoriesApi();
 apiInstance.getCategories().then(function(data) {
@@ -164,10 +161,9 @@ Updates category
 var VismaSignClient = require('visma-sign-client');
 var defaultClient = VismaSignClient.ApiClient.instance;
 
-// Configure API key authorization: ApiKeyAuth
-var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.clientId = 'YOUR CLIENT ID';
-ApiKeyAuth.clientSecret = 'YOUR CLIENT SECRET';
+// Configure authorization
+defaultClient.clientId = 'YOUR CLIENT ID';
+defaultClient.clientSecret = 'YOUR CLIENT SECRET';
 
 var apiInstance = new VismaSignClient.CategoriesApi();
 
