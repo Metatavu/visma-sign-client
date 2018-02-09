@@ -26,6 +26,7 @@ module.exports = function(grunt) {
         command : 'java -jar swagger-codegen-cli.jar generate ' +
           '-i ./swagger.yaml ' +
           '-l javascript ' +
+          '-t javascript-templates ' +
           '-o javascript-generated/ ' +
           `--additional-properties useES6=false,usePromises=true,projectName=visma-sign-client,projectVersion=${JAVASCRIPT_VERSION}`
       },
@@ -71,9 +72,7 @@ module.exports = function(grunt) {
   grunt.registerTask('download-dependencies', 'if-missing:curl:swagger-codegen');
   grunt.registerTask('javascript-gen', [ 'download-dependencies', 'shell:javascript-generate', 'javascript-package-update:javascript-package' ]);
   grunt.registerTask('javascript', [ 'javascript-gen', 'shell:javascript-bump-version', 'shell:javascript-push', 'shell:javascript-publish']);
-  grunt.registerTask('jaxrs-gen', [ 'download-dependencies', 'clean:jaxrs-spec-sources', 'shell:jaxrs-spec-generate', 'clean:jaxrs-spec-cruft', 'shell:jaxrs-spec-install' ]);
-  grunt.registerTask('jaxrs-spec', [ 'jaxrs-gen', 'shell:jaxrs-spec-release' ]);
   
-  grunt.registerTask('default', ['javascript-gen' ]);
+  grunt.registerTask('default', ['javascript' ]);
   
 };

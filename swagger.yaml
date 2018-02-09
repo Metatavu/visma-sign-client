@@ -1,4 +1,4 @@
-swagger: '3.0'
+swagger: '2.0'
 info:
   title: Visma-Sign API
   description: Swagger documentation for Visma-Sign API.
@@ -20,6 +20,71 @@ produces:
   - application/json;charset=utf-8
 paths:
   /document/:
+    get:
+      operationId: searchDocuments
+      summary: Search documents
+      description: Search documents
+      parameters:
+        - name: category
+          in: query
+          description: Filter by category UUID. Full match
+          type: string
+        - name: name
+          in: query
+          description: Filter by document name. Partial matches.
+          type: string
+        - name: uuid
+          in: query
+          description: Filter by document UUID. Full match. Can be a comma-separated list.
+          type: string
+        - name: date_from
+          in: query
+          description: Filter by document creation date. YYYY-MM-DD, inclusive.
+          type: string
+        - name: date_to
+          in: query
+          description: Filter by document creation date. YYYY-MM-DD, inclusive.
+          type: string
+        - name: status
+          in: query
+          description: Filter by document status. Full match
+          type: string
+        - name: participant
+          in: query
+          description: Filter by invitee email, invitee phone number or signer name. Partial matches.
+          type: string
+        - name: sort_by
+          in: query
+          description: Set sort field. Valid choices are created_on (default) and name.
+          type: string
+        - name: sort_oder
+          in: query
+          description: Set sort order. Valid choices are DESC and ASC. Defaults to newest first / alphabetical.
+          type: string
+        - name: offset
+          in: query
+          description: Start at this document number.
+          type: integer
+          format: int64
+      tags:
+        - Documents
+      responses:
+        200:
+          description: Document status
+          schema:
+            $ref: '#/definitions/DocumentSearchResult'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
     post:
       operationId: createDocument
       summary: Creates new document
@@ -31,19 +96,570 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/Document'
-        - in: header
-          name: Content-MD5
-          schema:
-            type: string
-        - in: header
-          name: Date
-          schema:
-            type: string
       tags:
         - Documents
       responses:
         201:
           description: Document was successfully created
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /document/{documentId}:
+    get:
+      operationId: getDocumentStatus
+      summary: Finds document status
+      description: Finds document status
+      parameters:
+        - name: documentId
+          in: path
+          description: document id
+          type: string
+          format: uuid
+          required: true
+      tags:
+        - Documents
+      responses:
+        200:
+          description: Document status
+          schema:
+            $ref: '#/definitions/DocumentStatus'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+    delete:
+      operationId: deleteDocument
+      summary: Deletes document
+      description: A document must be cancelled or signed or have no invitations or signatures to be deleted.
+      parameters:
+        - name: documentId
+          in: path
+          description: document id
+          type: string
+          format: uuid
+          required: true
+      tags:
+        - Documents
+      responses:
+        200:
+          description: Document deleted succesfully
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /document/{documentId}/cancel:
+    post:
+      operationId: cancelDocument
+      summary: Cancels document
+      description: Document must have pending or unsent invites to be cancelled. All attached invites will be cancelled as well
+      parameters:
+        - name: documentId
+          in: path
+          description: document id
+          type: string
+          format: uuid
+          required: true
+      tags:
+        - Documents
+      responses:
+        200:
+          description: Document cancelled succesfully
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /document/{documentId}/invitations:
+    post:
+      operationId: createDocumentInvitation
+      summary: Create invitations for document
+      description: Create invitations for document
+      parameters:
+        - name: body
+          in: body
+          description: Payload
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/InvitationCreate'
+        - name: documentId
+          in: path
+          description: document id
+          type: string
+          format: uuid
+          required: true
+      tags:
+        - Invitations
+      responses:
+        201:
+          description: File added successfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/InvitationCreateResponse'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /document/{documentId}/files:
+    post:
+      operationId: addDocumentFile
+      summary: Adds file to document
+      description: Adds file to document
+      consumes:
+        - application/pdf
+      parameters:
+        - name: body
+          in: body
+          description: Payload
+          required: true
+          schema:
+            type: string
+            format: binary
+        - name: documentId
+          in: path
+          description: document id
+          type: string
+          format: uuid
+          required: true
+        - name: filename
+          in: query
+          description: filename for the file
+          type: string
+          maxLength: 255
+      tags:
+        - Files
+      responses:
+        201:
+          description: File added successfully
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /document/{documentId}/remind:
+    post:
+      operationId: remindDocumentInvitees
+      summary: Remaind all document invitees
+      description: Remaind all document invitees
+      parameters:
+        - name: documentId
+          in: path
+          description: document id
+          type: string
+          format: uuid
+          required: true
+      tags:
+        - Documents
+      responses:
+        200:
+          description: Invitees reminded
+          schema:
+            type: object
+            properties:
+              uuid:
+                type: string
+                format: uuid
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /document/{documentId}/files/{fileIndex}:
+    get:
+      operationId: getDocumentFile
+      summary: Finds document file
+      description: Finds document file
+      produces:
+        - application/pdf
+      parameters:
+        - name: documentId
+          in: path
+          description: document id
+          type: string
+          format: uuid
+          required: true
+        - name: fileIndex
+          in: path
+          description: file index
+          type: integer
+          format: int32
+          required: true
+      tags:
+        - Files
+      responses:
+        200:
+          description: File content
+          schema:
+            type: string
+            format: binary
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /invitation/{invitationId}:
+    get:
+      operationId: getInvitationStatus
+      summary: Finds invitation status
+      description: Finds invitation status
+      parameters:
+        - name: invitationId
+          in: path
+          description: invitation id
+          type: string
+          format: uuid
+          required: true
+      tags:
+        - Invitations
+      responses:
+        200:
+          description: Invitation status
+          schema:
+            $ref: '#/definitions/InvitationStatus'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /invitation/{invitationId}/remind:
+    post:
+      operationId: remindSingleInvitee
+      summary: Reminds single invitee
+      description: Reminds single invitee
+      parameters:
+        - name: invitationId
+          in: path
+          description: invitation id
+          type: string
+          format: uuid
+          required: true
+      tags:
+        - Invitations
+      responses:
+        200:
+          description: Invitee reminded successfully
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /invitation/{invitationId}/signature:
+    post:
+      operationId: fullfillInvitation
+      summary: Fulfills invitation
+      description: Fulfills invitation
+      parameters:
+        - name: body
+          in: body
+          description: Payload
+          required: true
+          schema:
+            $ref: '#/definitions/InvitationFullfillment'
+        - name: invitationId
+          in: path
+          description: invitation id
+          type: string
+          format: uuid
+          required: true
+      tags:
+        - Invitations
+      responses:
+        201:
+          description: Invitation status
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /category/:
+    get:
+      operationId: getCategories
+      summary: Gets categories
+      description: Gets categories
+      tags:
+        - Categories
+      responses:
+        200:
+          description: Categories
+          schema:
+            $ref: '#/definitions/Categories'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+    post:
+      operationId: createCategory
+      summary: Creates new category
+      description: Creates new category
+      parameters:
+        - name: body
+          in: body
+          description: Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Category'
+      tags:
+        - Categories
+      responses:
+        201:
+          description: Category was successfully created
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /category/{categoryId}:
+    patch:
+      operationId: updateCategory
+      summary: Updates category
+      description: Updates category
+      parameters:
+        - name: body
+          in: body
+          description: Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Category'
+        - name: categoryId
+          in: path
+          description: category id
+          type: string
+          format: uuid
+          required: true
+      tags:
+        - Categories
+      responses:
+        204:
+          description: Category updated successfully
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+    delete:
+      operationId: deleteCategory
+      summary: Deletes category
+      description: Deletes category
+      parameters:
+        - name: categoryId
+          in: path
+          description: category id
+          type: string
+          format: uuid
+          required: true
+      tags:
+        - Categories
+      responses:
+        204:
+          description: Category deleted successfully
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /invitee-group/:
+    get:
+      operationId: getInviteeGroups
+      summary: Gets invitee groups
+      description: Gets invitee groups
+      tags:
+        - InviteeGroups
+      responses:
+        200:
+          description: Invitee groups
+          schema:
+            $ref: '#/definitions/InviteeGroups'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /saved-invitation-message/email/:
+    get:
+      operationId: getSavedEmailMessages
+      summary: Gets saved email messages
+      description: Gets saved email messages
+      tags:
+        - SavedInvitationMessages
+      responses:
+        200:
+          description: Invitee groups
+          schema:
+            $ref: '#/definitions/SavedEmailMessages'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /saved-invitation-message/sms/:
+    get:
+      operationId: getSavedSmsMessages
+      summary: Gets saved sms messages
+      description: Gets saved sms messages
+      tags:
+        - SavedInvitationMessages
+      responses:
+        200:
+          description: Invitee groups
+          schema:
+            $ref: '#/definitions/SavedSmsMessages'
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+  /auth/methods:
+    get:
+      operationId: getAuthenticationMethods
+      summary: Gets authentication methods
+      description: Gets authentication methods
+      security: []
+      parameters:
+        - name: includeAllIdProviders
+          in: query
+          description: By default, only Finnish authentication methods are provided. By adding the GET parameter value includeAllIdProviders=true to the request, Nordic authentication methods will also be included in the response. 
+          type: boolean
+      tags:
+        - Authentications
+      responses:
+        200:
+          description: Authentication methods
+          schema:
+            $ref: '#/definitions/AuthenticationMethods'
         400:
           description: Invalid request was sent to the server
           schema:
@@ -89,6 +705,264 @@ definitions:
       - code
     properties:
       code:
+        type: string
+  DocumentSearchResult:
+    type: object
+    properties:
+      total:
+        type: integer
+        format: int64
+      offset:
+        type: integer
+        format: int64
+      length:
+        type: integer
+        format: int64
+      documents:
+        type: array
+        items:
+          $ref: '#/definitions/DocumentStatus'
+  DocumentStatus:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+      name:
+        type: string
+      status:
+        type: string
+        enum: [new, pending, signed, deleted, cancelled]
+      files:
+        type: array
+        items:
+          $ref: '#/definitions/DocumentFile'
+      invitations:
+        type: array
+        items:
+          $ref: '#/definitions/DocumentInvitationStatus'
+  DocumentInvitationStatus:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+      status:
+        type: string
+        enum: [waiting-for-send, sending, new, opened, signed, cancelled]
+      passphrase:
+        type: string
+      email:
+        type: string
+      sms:
+        type: string
+  DocumentFile:
+    type: object
+    properties:
+      filename:
+        type: string
+  InvitationStatus:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+      status:
+        type: string
+        enum: [waiting-for-send, sending, new, opened, signed, cancelled]
+      document:
+        type: object
+        properties:
+          uuid:
+            type: string
+            format: uuid
+          name:
+            type: string
+  InvitationCreate:
+    type: object
+    properties:
+      email:
+        type: string
+      identifier_type:
+        type: string
+      identifier:
+        type: string
+      sms:
+        type: string
+      sign_as_organization:
+        type: boolean
+      language:
+        type: string
+        enum: [fi, sv, en, nb, da]
+      messages:
+        type: object
+        properties:
+          send_invitation_email:
+            type: boolean
+          invitation_email_message:
+            type: string
+          send_invitation_sms:
+            type: boolean
+          custom_sms:
+            type: string
+          separate_invite_parts:
+            type: boolean
+          send_invitee_all_collected_email:
+            type: boolean
+          send_inviter_one_collected_emails:
+            type: boolean
+          attachment_allowed:
+            type: boolean
+      inviter:
+        type: object
+        properties:
+          name:
+            type: string
+          email:
+            type: string
+          logo:
+            type: string
+      order:
+        type: object
+        properties:
+          index:
+            type: integer
+            format: int32
+          require_before_sending_next_invitations:
+            type: boolean
+  InvitationCreateResponse:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+      status:
+        type: string
+        enum: [waiting-for-send, sending, new, opened, signed, cancelled]
+      passphrase:
+        type: string
+  InvitationFullfillment:
+    type: object
+    required:
+      - returnUrl
+      - identifier
+      - authService
+    properties:
+      returnUrl:
+        type: string
+        description: User will be returned to this url after signing.
+      identifier:
+        type: string
+        description: The SSN of the person who is signing.
+      authService:
+        type: string
+        description: The identifier of an authentication method.
+  Categories:
+    type: object
+    properties:
+      categories:
+        type: array
+        items:
+          $ref: '#/definitions/DocumentInvitationStatus'
+  Category:
+    type: object
+    required:
+      - name
+    properties:
+      uuid:
+        type: string
+        format: uuid
+      name:
+        type: string
+        minLength: 1
+        maxLength: 50
+      description:
+        type: string
+        maxLength: 50000
+  InviteeGroups:
+    type: object
+    properties:
+      invitee_groups:
+        type: array
+        items:
+          $ref: '#/definitions/InviteeGroup'
+  InviteeGroup:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+      name:
+        type: string
+      entries:
+        type: array
+        items:
+          $ref: '#/definitions/InviteeGroupEntry'
+  InviteeGroupEntry:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+      email_address:
+        type: string
+      msisdn:
+        type: string
+  SavedEmailMessages:
+    type: object
+    properties:
+      email_messages:
+        type: array
+        items:
+          $ref: '#/definitions/SavedEmailMessage'
+  SavedEmailMessage:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+      title:
+        type: string
+      message:
+        type: string
+      edited_on:
+        type: string
+      edited_by:
+        type: string
+  SavedSmsMessages:
+    type: object
+    properties:
+      email_messages:
+        type: array
+        items:
+          $ref: '#/definitions/SavedSmsMessage'
+  SavedSmsMessage:
+    type: object
+    properties:
+      uuid:
+        type: string
+        format: uuid
+      message:
+        type: string
+      edited_on:
+        type: string
+      edited_by:
+        type: string
+  AuthenticationMethods:
+    type: object
+    properties:
+      methods:
+        type: array
+        items:
+          $ref: '#/definitions/AuthenticationMethod'
+  AuthenticationMethod:
+    type: object
+    properties:
+      identifier:
+        type: string
+      name:
+        type: string
+      image:
         type: string
   InternalServerError:
     type: object
