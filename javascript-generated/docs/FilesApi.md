@@ -23,9 +23,8 @@ var defaultClient = VismaSignClient.ApiClient.instance;
 
 // Configure API key authorization: ApiKeyAuth
 var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//ApiKeyAuth.apiKeyPrefix = 'Token';
+ApiKeyAuth.clientId = 'YOUR CLIENT ID';
+ApiKeyAuth.clientSecret = 'YOUR CLIENT SECRET';
 
 var apiInstance = new VismaSignClient.FilesApi();
 
@@ -80,9 +79,8 @@ var defaultClient = VismaSignClient.ApiClient.instance;
 
 // Configure API key authorization: ApiKeyAuth
 var ApiKeyAuth = defaultClient.authentications['ApiKeyAuth'];
-ApiKeyAuth.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//ApiKeyAuth.apiKeyPrefix = 'Token';
+ApiKeyAuth.clientId = 'YOUR CLIENT ID';
+ApiKeyAuth.clientSecret = 'YOUR CLIENT SECRET';
 
 var apiInstance = new VismaSignClient.FilesApi();
 

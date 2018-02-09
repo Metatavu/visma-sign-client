@@ -33,7 +33,7 @@
   /**
    * Documents service.
    * @module api/DocumentsApi
-   * @version 0.0.1
+   * @version 0.0.2
    */
 
   /**

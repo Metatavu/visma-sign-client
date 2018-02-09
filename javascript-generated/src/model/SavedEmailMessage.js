@@ -36,7 +36,7 @@
   /**
    * The SavedEmailMessage model module.
    * @module model/SavedEmailMessage
-   * @version 0.0.1
+   * @version 0.0.2
    */
 
   /**

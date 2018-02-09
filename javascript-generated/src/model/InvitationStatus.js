@@ -36,7 +36,7 @@
   /**
    * The InvitationStatus model module.
    * @module model/InvitationStatus
-   * @version 0.0.1
+   * @version 0.0.2
    */
 
   /**

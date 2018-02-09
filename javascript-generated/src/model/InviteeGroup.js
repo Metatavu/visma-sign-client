@@ -36,7 +36,7 @@
   /**
    * The InviteeGroup model module.
    * @module model/InviteeGroup
-   * @version 0.0.1
+   * @version 0.0.2
    */
 
   /**
