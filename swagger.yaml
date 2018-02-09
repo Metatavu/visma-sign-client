@@ -1,0 +1,132 @@
+swagger: '3.0'
+info:
+  title: Visma-Sign API
+  description: Swagger documentation for Visma-Sign API.
+  version: "0.0.1"
+schemes:
+  - https
+host: www.onnistuu.fi
+basePath: /api/v1
+securityDefinitions:
+  ApiKeyAuth:
+    type: apiKey
+    in: header
+    name: Authorization
+security:
+- ApiKeyAuth: []
+consumes:
+  - application/json;charset=utf-8
+produces:
+  - application/json;charset=utf-8
+paths:
+  /document/:
+    post:
+      operationId: createDocument
+      summary: Creates new document
+      description: Creates new document
+      parameters:
+        - name: body
+          in: body
+          description: Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Document'
+        - in: header
+          name: Content-MD5
+          schema:
+            type: string
+        - in: header
+          name: Date
+          schema:
+            type: string
+      tags:
+        - Documents
+      responses:
+        201:
+          description: Document was successfully created
+        400:
+          description: Invalid request was sent to the server
+          schema:
+            $ref: '#/definitions/BadRequest'
+        403:
+          description: Attempted to make a call with unauthorized client
+          schema:
+            $ref: '#/definitions/Forbidden'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/InternalServerError'
+definitions:
+  Document:
+    type: object
+    required:
+      - document
+    properties:
+      document:
+        description: Document data
+        type: object
+        required:
+          - name
+        properties:
+          name:
+            description: Document name
+            type: string
+            minLength: 1
+            maxLength: 100
+          category_uuid:
+            description: Optional, must exist if defined
+            type: string
+          category:
+            description: Optional, must exist if defined
+            type: string
+          affiliates:
+            type: array
+            items:
+              $ref: '#/definitions/Affiliate'
+  Affiliate:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
+  InternalServerError:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+  Forbidden:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+  BadRequest:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+  NotImplemented:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+  NotFound:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
