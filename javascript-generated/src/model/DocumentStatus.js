@@ -36,7 +36,7 @@
   /**
    * The DocumentStatus model module.
    * @module model/DocumentStatus
-   * @version 0.0.5
+   * @version 0.0.6
    */
 
   /**

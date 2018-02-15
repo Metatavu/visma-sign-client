@@ -36,7 +36,7 @@
   /**
    * The InvitationCreateMessages model module.
    * @module model/InvitationCreateMessages
-   * @version 0.0.5
+   * @version 0.0.6
    */
 
   /**

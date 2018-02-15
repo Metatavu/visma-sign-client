@@ -36,7 +36,7 @@
   /**
    * The InvitationCreateResponse model module.
    * @module model/InvitationCreateResponse
-   * @version 0.0.5
+   * @version 0.0.6
    */
 
   /**

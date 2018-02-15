@@ -32,7 +32,7 @@
 
   /**
    * @module ApiClient
-   * @version 0.0.5
+   * @version 0.0.6
    */
 
   /**
@@ -317,6 +317,7 @@
           break;
         case 'apiKey':
           if (_this.clientId && _this.clientSecret) {
+            var qs = querystring.stringify(request.qs);
             var url = require('url');
             var requestDate = new Date();
             var contentType = request.header['Content-Type'];

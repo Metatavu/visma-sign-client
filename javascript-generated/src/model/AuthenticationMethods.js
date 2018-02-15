@@ -36,7 +36,7 @@
   /**
    * The AuthenticationMethods model module.
    * @module model/AuthenticationMethods
-   * @version 0.0.5
+   * @version 0.0.6
    */
 
   /**

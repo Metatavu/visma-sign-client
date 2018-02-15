@@ -36,7 +36,7 @@
   /**
    * The InvitationFullfillment model module.
    * @module model/InvitationFullfillment
-   * @version 0.0.5
+   * @version 0.0.6
    */
 
   /**

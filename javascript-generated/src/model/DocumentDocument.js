@@ -36,7 +36,7 @@
   /**
    * The DocumentDocument model module.
    * @module model/DocumentDocument
-   * @version 0.0.5
+   * @version 0.0.6
    */
 
   /**
