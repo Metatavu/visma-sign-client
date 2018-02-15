@@ -36,7 +36,7 @@
   /**
    * The SavedSmsMessages model module.
    * @module model/SavedSmsMessages
-   * @version 0.0.4
+   * @version 0.0.5
    */
 
   /**

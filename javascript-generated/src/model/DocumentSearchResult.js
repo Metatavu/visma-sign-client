@@ -36,7 +36,7 @@
   /**
    * The DocumentSearchResult model module.
    * @module model/DocumentSearchResult
-   * @version 0.0.4
+   * @version 0.0.5
    */
 
   /**
